@@ -69,5 +69,59 @@ public class HsqlDBTest {
 		ds.setUser("sa");
 		ds.setPassword("sa");
 		return ds;
-	}	
+	}
+        
+        
+        
+        
+        /**
+         * Test d'insertion d'un produit dans la base de donnée
+         */
+        @Test
+        public void insertNewProduct() throws SQLException {
+            int id = 12;
+            String name = "Peluche de pingouin Terminator";
+            float price = 666;
+            try {
+                assertEquals(1, myObject.AjouterArticle(id, name, price));
+            } catch (SQLException e){
+                
+            }
+        }
+        
+        
+        /**
+         * Test de recherche d'un produit à partir de son id
+     * @throws java.sql.SQLException
+         */
+        @Test
+        public void searchProduct() throws SQLException {
+            
+            int id = 12;
+            try {                
+                ProductEntity result = myObject.searchproduct(id);
+                assertEquals(666, result.getPrice()); 
+                
+            } catch (SQLException e) {
+            }
+        }
+        
+        
+        /**
+         * Test contrainte positivePrice qui assure qu'un prix est toujours 
+         * positif
+         */
+        @Test
+        public void testPositivePrice() throws SQLException {
+            int id = 3;
+            String name = "Objet d'erreur";
+            float price = -2;
+            try {
+                // Le prix est négatif -> l'opération doit échouer
+                myObject.AjouterArticle(id, name, price);
+                fail();
+            } catch (SQLException e){
+                //On doit passer par ici
+            }
+        }
 }
